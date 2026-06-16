@@ -3,7 +3,7 @@ from DAO.Conexion import Conexion
 host="localhost"
 user="root"
 password=""
-db="empresa"
+db="bd_peliculas"
 def agregar(c):#c es un objeto de tipo cliente
     try:
         con=Conexion(host,user,password,db)
