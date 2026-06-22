@@ -1,119 +1,213 @@
 import os
-import DAO.CRUDCliente
-import DAO.CRUDTipoCliente
-#from DTO.TipoUsuario import TipoUsuario
-from DTO.Cliente import Cliente
+import DAO.CRUDPelicula
+from DTO.Pelicula import Pelicula
+
 
 def menuPrincipal():
     os.system("cls")
-    print("=== Menú Principal ===")
-    print("1. Ingresar Clientes")
-    print("2. Mostrar Clientes")
-    print("3. Modificar Clientes")
-    print("4. Eliminar Clientes")
+    print("=== MENU PRINCIPAL ===")
+    print("1. Ingresar Pelicula")
+    print("2. Mostrar Peliculas")
+    print("3. Modificar Pelicula")
+    print("4. Eliminar Pelicula")
     print("5. Salir")
-    
+
+
 def menuMostrar():
     os.system("cls")
-    print("=== Menú Mostrar===")
-    print("1. Mostrar Todos los Clientes")
-    print("2. Mostrar Cliente Particular")
-    print("3. Mostrar Cliente Parcial")
+    print("=== MENU MOSTRAR ===")
+    print("1. Mostrar Todas")
+    print("2. Mostrar Particular")
+    print("3. Mostrar Parcial")
     print("4. Volver")
 
-def ingresarCliente():
+
+def ingresarPelicula():
+
     os.system("cls")
-    print("=== Ingresar Cliente ===")
-    run=input("Ingrese el RUN del cliente: ")
-    nombre=input("Ingrese el nombre del cliente: ")
-    apellido=input("Ingrese el apellido del cliente: ")
-    direccion=input("Ingrese la dirección del cliente: ")
-    fono=input("Ingrese el teléfono del cliente: ")
-    correo=input("Ingrese el correo del cliente: ")
-    tipo_cliente=int(input("Ingrese el tipo de cliente (1, 2 o 3): "))    
-    #Recorrer los tipos de Clientes
-    datos=DAO.CRUDTipoCliente.mostrarTodosTiposClientes()
-    print("*****************************")
-    print("Tipos de Clientes Disponibles:")
-    print("Id Tipo - Descripción")
+
+    print("=== INGRESAR PELICULA ===")
+
+    titulo=input("Titulo: ")
+
+    duracion=int(input("Duracion (minutos): "))
+
+    fecha=input("Fecha Estreno (AAAA-MM-DD): ")
+
+    print("\nGENEROS")
+    print("1. Terror")
+    print("2. Ciencia Ficcion")
+    print("3. Drama")
+
+    genero=int(input("Seleccione genero: "))
+
+    print("\nIDIOMAS")
+    print("1. Español")
+    print("2. Ingles")
+    print("3. Portugues")
+
+    idioma=int(input("Seleccione idioma: "))
+
+    director=input("Director: ")
+
+    pelicula=Pelicula(
+        None,
+        titulo,
+        duracion,
+        fecha,
+        genero,
+        idioma,
+        director
+    )
+
+    DAO.CRUDPelicula.agregar(pelicula)
+
+    input("\nPresione ENTER para continuar...")
+
+
+def mostrarTodas():
+
+    os.system("cls")
+
+    datos=DAO.CRUDPelicula.mostrarTodasPeliculas()
+
+    print("ID | TITULO | DURACION | FECHA | GENERO | IDIOMA | DIRECTOR")
+
     for dato in datos:
-        print("{} - {}".format(dato[0],dato[1]))
+        print(dato)
 
-    tipo_cliente=int(input("Ingrese el id del tipo de cliente: "))    
-    montoCredito=float(input("Ingrese el monto de crédito del cliente: "))
-    deuda=float(input("Ingrese la deuda del cliente: "))
+    input("\nPresione ENTER para continuar...")
 
-    nuevo_cliente=Cliente(run,nombre,apellido,direccion,fono,correo,tipo_cliente,montoCredito,deuda)
-    DAO.CRUDCliente.agregar(nuevo_cliente)  
 
-def mostrarTodosClientes():
+def mostrarParticular():
+
     os.system("cls")
-    print("=== Mostrar Todos los Clientes ===")
-    datos=DAO.CRUDCliente.mostrarTodosClientes()
-    print("Id Cliente - RUN - Nombre - Apellido - Dirección - Teléfono - Correo - Tipo Cliente - Monto Crédito - Deuda")
+
+    id_pelicula=int(input("Ingrese ID pelicula: "))
+
+    dato=DAO.CRUDPelicula.mostrarParticular(id_pelicula)
+
+    print("\nDATOS PELICULA")
+    print(dato)
+
+    input("\nPresione ENTER para continuar...")
+
+
+def mostrarParcial():
+
+    os.system("cls")
+
+    texto=input("Ingrese parte del titulo: ")
+
+    datos=DAO.CRUDPelicula.mostrarParcial(texto)
+
     for dato in datos:
-        print("{} - {} - {} - {} - {} - {} - {} - {} - {}".format(dato[0],dato[1],dato[2],dato[3],
-                                                                    dato[4],dato[5],dato[6],dato[7],dato[8]))
-    input("Presione Enter para continuar...")
+        print(dato)
 
-def mostrarUnCliente():
-    os.system("cls")
-    print("=== Mostrar Cliente Particular ===")
-    id_cliente=int(input("Ingrese el ID del cliente a mostrar: "))
-    dato=DAO.CRUDCliente.mostrarParticularCliente(id_cliente)
-    print("Id Cliente                   : {}".format(dato[0]))
-    print("RUN                          : {}".format(dato[1]))
-    print("Nombre                       : {}".format(dato[2]))
-    print("Apellido                     : {}".format(dato[3]))
-    print("Dirección                    : {}".format(dato[4]))
-    print("Teléfono                     : {}".format(dato[5]))
-    print("Correo                       : {}".format(dato[6]))
-    print("Tipo Cliente (ID)            : {}".format(dato[7]))
-    print("Monto Crédito                : {}".format(dato[8]))
-    print("Deuda                        : {}".format(dato[9]))
-    print("***************************************************")
-    input("Presione Enter para continuar...")
+    input("\nPresione ENTER para continuar...")
 
-def mostrarParcialCliente():
+
+def modificarPelicula():
+
     os.system("cls")
-    print("=== Mostrar Cliente Parcial ===")
-    cant_clientes=int(input("Ingrese la cantidad de clientes a mostrar: "))
-    datos=DAO.CRUDCliente.mostrarParcial(cant_clientes)    
-    print("Id Cliente - RUN - Nombre - Apellido - Dirección - Teléfono - Correo - Tipo Cliente - Monto Crédito - Deuda")
-    for dato in datos:
-        print("{} - {} - {} - {} - {} - {} - {} - {} - {}".format(dato[0],dato[1],dato[2],dato[3],
-                                                                    dato[4],dato[5],dato[6],dato[7],dato[8]))
-    input("Presione Enter para continuar...")
+
+    id_pelicula=int(input("ID Pelicula: "))
+
+    titulo=input("Nuevo titulo: ")
+
+    duracion=int(input("Nueva duracion: "))
+
+    fecha=input("Nueva fecha (AAAA-MM-DD): ")
+
+    print("\nGENEROS")
+    print("1. Terror")
+    print("2. Ciencia Ficcion")
+    print("3. Drama")
+
+    genero=int(input("Genero: "))
+
+    print("\nIDIOMAS")
+    print("1. Español")
+    print("2. Ingles")
+    print("3. Portugues")
+
+    idioma=int(input("Idioma: "))
+
+    director=input("Director: ")
+
+    pelicula=Pelicula(
+        id_pelicula,
+        titulo,
+        duracion,
+        fecha,
+        genero,
+        idioma,
+        director
+    )
+
+    DAO.CRUDPelicula.editar(pelicula)
+
+    input("\nPresione ENTER para continuar...")
+
+
+def eliminarPelicula():
+
+    os.system("cls")
+
+    id_pelicula=int(input("ID pelicula a eliminar: "))
+
+    DAO.CRUDPelicula.eliminar(id_pelicula)
+
+    input("\nPresione ENTER para continuar...")
+
+
 def mostrar():
+
     while True:
+
         menuMostrar()
-        op=int(input("Seleccione una opción: "))
+
+        op=int(input("Seleccione opcion: "))
+
         if op==1:
-            mostrarTodosClientes()
+            mostrarTodas()
+
         elif op==2:
-            mostrarUnCliente()
+            mostrarParticular()
+
         elif op==3:
-            mostrarParcialCliente()
+            mostrarParcial()
+
         elif op==4:
             break
+
         else:
-            print("Opción inválida. Intente nuevamente.")
-#Menu principal
+            print("Opcion invalida")
+
+
 while True:
+
     menuPrincipal()
-    op=int(input("Seleccione una opción: "))
+
+    op=int(input("Seleccione opcion: "))
+
     if op==1:
-        ingresarCliente()
+        ingresarPelicula()
+
     elif op==2:
         mostrar()
+
     elif op==3:
-        pass
+        modificarPelicula()
+
     elif op==4:
-        pass
+        eliminarPelicula()
+
     elif op==5:
-        op2=int(input("¿Está seguro que desea salir? ([SI-NO]): ")).upper()
-        if op2=="SI":
-            print("Saliendo del programa...")
-            exit()        
-        else:
-            print("Opción inválida. Volviendo al menú principal.")
+
+        print("Saliendo...")
+
+        break
+
+    else:
+        print("Opcion invalida")
