@@ -10,7 +10,7 @@ class Conexion:
 
     def ejecutar_query(self, sql):
         self.cursor.execute(sql)
-        return self.cursor()
+        return self.cursor
     
     def desconectar(self):
         self.db.close()
